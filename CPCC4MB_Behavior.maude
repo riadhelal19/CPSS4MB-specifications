@@ -1,0 +1,252 @@
+	
+	(omod CPSS4MB_Behavior is
+	pr FLOAT  .
+---ex SORTS .
+pr 	INT .
+protecting NAT .
+pr BOOL  .
+inc CONFIGURATION . 
+pr INT .
+ex Architecture .
+*** =================================================================================================================		
+var R R1 rpu : Oid .
+vars cam camm c1 c2 : Oid .
+vars po m n l : Nat .
+var v v1 v2 v3 v4 v5 v6 v7 v8 val : Float .
+var d : Bool .  
+ops ara ra1 ra2 ra3 ra4 ra5 ra6 ra7 ra8 rpu R rpuu rpug cpspu Radar-Node-Procesing-Unit : -> Oid .		  
+ops ca ca1 ca2 ca3 ca4 ca5 ca6 ca7 ca8 ca9 ca10 ca11 ca12 ca13 ca14 ca15 ca16 cad : -> Oid .
+**** ================================================================================================================
+									*** When motion is detected by radar ***
+									
+msg DetectMotion : Oid Oid  Float -> Msg .
+rl [DetectMotion] : 
+	< R : RADAR | SensedValue : val, Position : po >
+	< rpu : RADAR-NODE-PROCESSING-UNIT | V1 : v1, V2 : v2, V3 : v3,V4 : v4,V5 : v5,
+								 V6 : v6, V7 : v7, V8 : v8, detectmotion : d >
+								 DetectMotion (R , rpu, v)
+=>   
+	< R : RADAR | SensedValue : v, Position : po >
+	< rpu : RADAR-NODE-PROCESSING-UNIT | V1 : if  po == 1 and v > 0.0 and v < 1000.0 then v else v1 fi,
+										 V2 : if  po == 2 and v > 0.0 and v < 1000.0 then v else v2 fi,
+										 V3 : if  po == 3 and v > 0.0 and v < 1000.0 then v else v3 fi,
+										 V4 : if  po == 4 and v > 0.0 and v < 1000.0 then v else v4 fi,
+										 V5 : if  po == 5 and v > 0.0 and v < 1000.0 then v else v5 fi,
+								 		 V6 : if  po == 6 and v > 0.0 and v < 1000.0 then v else v6 fi, 
+								 		 V7 : if  po == 7 and v > 0.0 and v < 1000.0 then v else v7 fi,
+								 		 V8 : if  po == 8 and v > 0.0 and v < 1000.0 then v else v8 fi, 
+								 		 detectmotion : if v > 0.0 and v < 1000.0 then true else d fi > .
+			 								   
+*** =================================================================================================================
+
+*** =================================================================================================================
+ops Radar-Node-Procesing-Unit EXCAM-Node-Procesing-Unit : -> Oid .	
+***op EXCAM-Node-Procesing-Unit : -> EXCAM-NODE-PROCESSING-UNIT .	
+***op Radar-Node-Procesing-Unit : -> RADAR-NODE-PROCESSING-UNIT .	 							   
+msg from_to_Transer-Data : Oid Oid -> Msg .
+rl [Data-Transfer-from-radars-node-to-EXCAMs-Node] :
+
+< rpuu : RADAR-NODE-PROCESSING-UNIT | V1 : v1, V2 : v2, V3 : v3,V4 : v4,V5 : v5,
+								 V6 : v6, V7 : v7, V8 : v8, detectmotion : d >
+< EXCAM-Node-Procesing-Unit : EXCAM-NODE-PROCESSING-UNIT | cam1 : s, cam2 : s, cam3 : s, cam4 : s, cam5 : s,
+								   cam6 : s, cam7 : s, cam8 : s, cam9 : s, cam10 : s,
+								   cam11 : s, cam12 : s, cam13 : s, cam14 : s, cam15 : s,
+								   cam16 : s >
+								   (from rpuu to EXCAM-Node-Procesing-Unit Transer-Data)
+								   =>
+< rpuu : RADAR-NODE-PROCESSING-UNIT | V1 : v1, V2 : v2, V3 : v3,V4 : v4,V5 : v5,
+								 V6 : v6, V7 : v7, V8 : v8, detectmotion : d >
+< EXCAM-Node-Procesing-Unit : EXCAM-NODE-PROCESSING-UNIT | 
+		cam1 : (if v1 > 0.0 and v1 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam2 : (if v1 > 0.0 and v1 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam3 : (if v2 > 0.0 and v2 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam4 : (if v2 > 0.0 and v2 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam5 : (if v3 > 0.0 and v3 < 1000.0 then ACTIVATE-RECORDING else s fi),
+		cam6 : (if v3 > 0.0 and v3 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam7 : (if v4 > 0.0 and v4 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam8 : (if v4 > 0.0 and v4 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam9 : (if v5 > 0.0 and v5 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam10 : (if v5 > 0.0 and v5 < 1000.0 then ACTIVATE-RECORDING else s fi),
+		cam11 : (if v6 > 0.0 and v6 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam12 : (if v6 > 0.0 and v6 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam13 : (if v7 > 0.0 and v7 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam14 : (if v7 > 0.0 and v7 < 1000.0 then ACTIVATE-RECORDING else s fi), 
+		cam15 : (if v8 > 0.0 and v8 < 1000.0 then ACTIVATE-RECORDING else s fi),
+		cam16 : (if v8 > 0.0 and v8 < 1000.0 then ACTIVATE-RECORDING else s fi) > .	
+		
+*** =================================================================================================================							 		 
+									*** turn on the recording of the respective camera. ***
+ops EXCAM1 EXCAM2 EXCAM3 EXCAM4 EXCAM5 EXCAM6 EXCAM7 EXCAM8 EXCAM9 : -> Oid .
+ops	EXCAM10 EXCAM11 EXCAM12 EXCAM13 EXCAM14 EXCAM15 EXCAM16 : -> Oid . 
+vars ste s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 : STATE .
+var onof : ONOFF .
+msg ActiveCameras : Oid  -> Msg .
+rl [ActiveCameras] :
+
+< EXCAM-Node-Procesing-Unit : EXCAM-NODE-PROCESSING-UNIT | cam1 : s1, cam2 : s2, cam3 : s3, cam4 : s4, cam5 : s5,
+								   cam6 : s6, cam7 : s7, cam8 : s8, cam9 : s9, cam10 : s10,
+								   cam11 : s11, cam12 : s12, cam13 : s13, cam14 : s14, cam15 : s15,
+								   cam16 : s16 >
+< EXCAM1 : EXCAM | OnOff : onof, state : ste, Position : 1 >
+< EXCAM2 : EXCAM | OnOff : onof, state : ste, Position : 2 >
+< EXCAM3 : EXCAM | OnOff : onof, state : ste, Position : 3 >
+< EXCAM4 : EXCAM | OnOff : onof, state : ste, Position : 4 >
+< EXCAM5 : EXCAM | OnOff : onof, state : ste, Position : 5 >
+< EXCAM6 : EXCAM | OnOff : onof, state : ste, Position : 6 >
+< EXCAM7 : EXCAM | OnOff : onof, state : ste, Position : 7 >
+< EXCAM8 : EXCAM | OnOff : onof, state : ste, Position : 8 >
+< EXCAM9 : EXCAM | OnOff : onof, state : ste, Position : 9 >
+< EXCAM10 : EXCAM | OnOff : onof, state : ste, Position : 10 >
+< EXCAM11 : EXCAM | OnOff : onof, state : ste, Position : 11 >
+< EXCAM12 : EXCAM | OnOff : onof, state : ste, Position : 12 >
+< EXCAM13 : EXCAM | OnOff : onof, state : ste, Position : 13 >
+< EXCAM14 : EXCAM | OnOff : onof, state : ste, Position : 14 >
+< EXCAM15 : EXCAM | OnOff : onof, state : ste, Position : 15 >
+< EXCAM16 : EXCAM | OnOff : onof, state : ste, Position : 16 >
+ActiveCameras(EXCAM-Node-Procesing-Unit)
+=>
+< EXCAM-Node-Procesing-Unit : EXCAM-NODE-PROCESSING-UNIT | cam1 : s1, cam2 : s2, cam3 : s3, cam4 : s4, cam5 : s5,
+								   cam6 : s6, cam7 : s7, cam8 : s8, cam9 : s9, cam10 : s10,
+								   cam11 : s11, cam12 : s12, cam13 : s13, cam14 : s14, cam15 : s15,
+								   cam16 : s16 >
+< EXCAM1 : EXCAM | OnOff : onof, state : s1, Position : 1 >
+< EXCAM2 : EXCAM | OnOff : onof, state : s2, Position : 2 >
+< EXCAM3 : EXCAM | OnOff : onof, state : s3, Position : 3 >
+< EXCAM4 : EXCAM | OnOff : onof, state : s4, Position : 4 >
+< EXCAM5 : EXCAM | OnOff : onof, state : s5, Position : 5 >
+< EXCAM6 : EXCAM | OnOff : onof, state : s6, Position : 6 >
+< EXCAM7 : EXCAM | OnOff : onof, state : s7, Position : 7 >
+< EXCAM8 : EXCAM | OnOff : onof, state : s8, Position : 8 >
+< EXCAM9 : EXCAM | OnOff : onof, state : s9, Position : 9 >
+< EXCAM10 : EXCAM | OnOff : onof, state : s10, Position : 10 >
+< EXCAM11 : EXCAM | OnOff : onof, state : s11, Position : 11 >
+< EXCAM12 : EXCAM | OnOff : onof, state : s12, Position : 12 >
+< EXCAM13 : EXCAM | OnOff : onof, state : s13, Position : 13 >
+< EXCAM14 : EXCAM | OnOff : onof, state : s14, Position : 14 >
+< EXCAM15 : EXCAM | OnOff : onof, state : s15, Position : 15 >
+< EXCAM16 : EXCAM | OnOff : onof, state : s16, Position : 16 > .
+***==================================================================================================================
+										*** turn on the siren. ***
+
+
+ops	Siren : -> Oid . 
+vars Active : Bool .
+
+msg ActiveSiren : Oid  -> Msg .
+rl [ActiveSiren] :
+< rpuu : RADAR-NODE-PROCESSING-UNIT | V1 : v1, V2 : v2, V3 : v3,V4 : v4,V5 : v5,
+								 V6 : v6, V7 : v7, V8 : v8, detectmotion : d >
+< Siren : SIREN | isActivated : Active >
+ActiveSiren(rpuu)
+=>
+< rpuu : RADAR-NODE-PROCESSING-UNIT | V1 : v1, V2 : v2, V3 : v3,V4 : v4,V5 : v5,
+								 V6 : v6, V7 : v7, V8 : v8, detectmotion : d >
+< Siren : SIREN | isActivated : d > .
+***==================================================================================================================
+							
+***==================================================================================================================
+msg AllActions : Oid Float -> Msg .
+rl [AllActions] : AllActions(R,val)
+< R : RADAR | SensedValue : val, Position : po >
+< EXCAM1 : EXCAM | OnOff : onof, state : ste, Position : 1 >
+< EXCAM2 : EXCAM | OnOff : onof, state : ste, Position : 2 >
+< EXCAM3 : EXCAM | OnOff : onof, state : ste, Position : 3 >
+< EXCAM4 : EXCAM | OnOff : onof, state : ste, Position : 4 >
+< EXCAM5 : EXCAM | OnOff : onof, state : ste, Position : 5 >
+< EXCAM6 : EXCAM | OnOff : onof, state : ste, Position : 6 >
+< EXCAM7 : EXCAM | OnOff : onof, state : ste, Position : 7 >
+< EXCAM8 : EXCAM | OnOff : onof, state : ste, Position : 8 >
+< EXCAM9 : EXCAM | OnOff : onof, state : ste, Position : 9 >
+< EXCAM10 : EXCAM | OnOff : onof, state : ste, Position : 10 >
+< EXCAM11 : EXCAM | OnOff : onof, state : ste, Position : 11 >
+< EXCAM12 : EXCAM | OnOff : onof, state : ste, Position : 12 >
+< EXCAM13 : EXCAM | OnOff : onof, state : ste, Position : 13 >
+< EXCAM14 : EXCAM | OnOff : onof, state : ste, Position : 14 >
+< EXCAM15 : EXCAM | OnOff : onof, state : ste, Position : 15 >
+< EXCAM16 : EXCAM | OnOff : onof, state : ste, Position : 16 >
+=>
+< R : RADAR | SensedValue : val, Position : po >
+< EXCAM1 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 1 then ACTIVATE-RECORDING else ste fi), Position : 1 >
+< EXCAM2 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 1 then ACTIVATE-RECORDING else ste fi), Position : 2 >
+< EXCAM3 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 2 then ACTIVATE-RECORDING else ste fi), Position : 3 >
+< EXCAM4 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 2 then ACTIVATE-RECORDING else ste fi), Position : 4 >
+< EXCAM5 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 3 then ACTIVATE-RECORDING else ste fi), Position : 5 >
+< EXCAM6 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 3 then ACTIVATE-RECORDING else ste fi), Position : 6 >
+< EXCAM7 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 4 then ACTIVATE-RECORDING else ste fi), Position : 7 >
+< EXCAM8 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 4 then ACTIVATE-RECORDING else ste fi), Position : 8 >
+< EXCAM9 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 5 then ACTIVATE-RECORDING else ste fi), Position : 9 >
+< EXCAM10 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 5 then ACTIVATE-RECORDING else ste fi), Position : 10 >
+< EXCAM11 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 6 then ACTIVATE-RECORDING else ste fi), Position : 11 >
+< EXCAM12 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 6 then ACTIVATE-RECORDING else ste fi), Position : 12 >
+< EXCAM13 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 7 then ACTIVATE-RECORDING else ste fi), Position : 13 >
+< EXCAM14 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 7 then ACTIVATE-RECORDING else ste fi), Position : 14 >
+< EXCAM15 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 8 then ACTIVATE-RECORDING else ste fi), Position : 15 >
+< EXCAM16 : EXCAM | OnOff : onof, state : (if val > 0.0 and val < 1000.0 and po == 8 then ACTIVATE-RECORDING else ste fi), Position : 16 > .
+
+***==================================================================================================================
+								
+									
+***==================================================================================================================
+
+endom)
+
+
+(omod teste is
+
+pr FLOAT  .
+pr 	INT .
+
+pr BOOL  .
+inc CONFIGURATION . 
+ex Architecture .
+
+var N : Oid .								 	
+
+op testone : -> Configuration .
+eq testone
+=
+< ra1 : RADAR | SensedValue : 0.0, Position : 1 > 
+< ra2 : RADAR | SensedValue : 0.0, Position : 2 >
+< ra3 : RADAR | SensedValue : 0.0, Position : 3 >
+< ra4 : RADAR | SensedValue : 0.0, Position : 4 >
+< ra5 : RADAR | SensedValue : 0.0, Position : 5 >
+< ra6 : RADAR | SensedValue : 0.0, Position : 6 >
+< ra7 : RADAR | SensedValue : 0.0, Position : 7 >
+< ra8 : RADAR | SensedValue : 0.0, Position : 8 > 
+
+< rpuu : RADAR-NODE-PROCESSING-UNIT | V1 : 0.0, V2 : 0.0, V3 : 0.0,V4 : 0.0,V5 : 0.0,
+								 V6 : 0.0, V7 : 0.0, V8 : 0.0, detectmotion : false >
+  DetectMotion (ra1 , rpuu, 700.0)
+  							 
+< EXCAM-Node-Procesing-Unit : EXCAM-NODE-PROCESSING-UNIT | cam1 : NO-RECORDING, cam2 : NO-RECORDING, cam3 : NO-RECORDING, cam4 : NO-RECORDING, cam5 : NO-RECORDING,
+								   cam6 : NO-RECORDING, cam7 : NO-RECORDING, cam8 : NO-RECORDING, cam9 : NO-RECORDING, cam10 : NO-RECORDING,
+								   cam11 : NO-RECORDING, cam12 : NO-RECORDING, cam13 : NO-RECORDING, cam14 : NO-RECORDING, cam15 : NO-RECORDING,
+								   cam16 : NO-RECORDING >
+							   (from rpuu to EXCAM-Node-Procesing-Unit Transer-Data) 
+
+< EXCAM1 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 1 >
+< EXCAM2 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 2 >
+< EXCAM3 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 3 >
+< EXCAM4 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 4 >
+< EXCAM5 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 5 >
+< EXCAM6 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 6 >
+< EXCAM7 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 7 >
+< EXCAM8 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 8 >
+< EXCAM9 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 9 >
+< EXCAM10 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 10 >
+< EXCAM11 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 11 >
+< EXCAM12 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 12 >
+< EXCAM13 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 13 >
+< EXCAM14 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 14 >
+< EXCAM15 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 15 >
+< EXCAM16 : EXCAM | OnOff : ON, state : NO-RECORDING, Position : 16 > 
+	ActiveCameras(EXCAM-Node-Procesing-Unit)
+	
+	< Siren : SIREN | isActivated : false >
+ActiveSiren(rpuu)							  
+ .
+  ---AllActions(ra1, 700.0).	
+			 
+
+endom)
+

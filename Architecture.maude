@@ -1,0 +1,58 @@
+
+
+***========================================================================================
+(omod Architecture is
+pr FLOAT  .
+---ex SORTS .
+pr 	INT .
+protecting NAT .
+pr BOOL  .
+inc CONFIGURATION . 
+pr INT .
+***==================================================================================================================
+
+	sorts STATE ONOFF MATERIAL .
+	ops ACTIVATE-RECORDING NO-RECORDING ACTIVE INACTIVE : -> STATE .
+	ops ON OFF : -> ONOFF .
+	ops CHEMICAL BIOLOGICAL RADIOLOGICAL NUCLEAR EXPLOSIVE : -> MATERIAL .
+	var s : STATE .
+	***sorts EXCAM-NODE-PROCESSING-UNIT EXCAM RADAR-NODE-PROCESSING-UNIT RADAR .
+	***subsorts EXCAM-NODE-PROCESSING-UNIT EXCAM RADAR-NODE-PROCESSING-UNIT RADAR < Oid .
+*** =================================================================================================================
+class SENSOR | SensedValue : Float .
+class SENSOR-NODE-PROCESSING-UNIT .
+---class SENSOR-NODE | Sensors : Set, SPU : SENSOR-NODE-PROCESSING-UNIT .
+class CPSS4MB-PU .
+class CPS-DATA-STORAGE .
+
+*** =================================================================================================================
+		class RADAR | SensedValue : Float, Position : Nat .
+		class RADAR-NODE-PROCESSING-UNIT | V1 : Float, V2 : Float, V3 : Float,V4 : Float,V5 : Float,
+										 V6 : Float, V7 : Float, V8 : Float, detectmotion : Bool .
+	---	class RADAR-NODE | Radars : Set, RPU : RADAR-NODE-PROCESSING-UNIT .
+*** =================================================================================================================
+		class EXCAM | OnOff : ONOFF, state : STATE, Position : Nat .
+		class EXCAM-NODE-PROCESSING-UNIT | cam1 : STATE, cam2 : STATE, cam3 : STATE, cam4 : STATE, cam5 : STATE,
+								   cam6 : STATE, cam7 : STATE, cam8 : STATE, cam9 : STATE, cam10 : STATE,
+								   cam11 : STATE, cam12 : STATE, cam13 : STATE, cam14 : STATE, cam15 : STATE,
+								   cam16 : STATE .
+	---	class EXCAM-NODE | EXCAMs : Set, EXCAMPU : EXCAM-NODE-PROCESSING-UNIT .
+*** =================================================================================================================
+		class SMOKE-SENSOR | PresenceOfSmoke : Bool, Position : Nat . 
+		class TEMPERATURE-SENSOR | SensedValue : Float, Position : Nat . 
+	---	class FIRE-SENSOR-NODE-PROCESSING-UNIT | SmokeSensors : Set, TemperarureSensor : Set .
+*** =================================================================================================================
+		class INCAM | isActivated : Bool, Position : Nat .
+		class INCAM-NODE-PROCESSING-UNIT .
+*** =================================================================================================================
+		class CBRNE | isActivated : Bool, SensedMaterial : MATERIAL, Position : Nat . ***---------------
+		class CBRNE-NODE-PROCESSING-UNIT .
+*** =================================================================================================================
+		class SIREN | isActivated : Bool .  ****---------------
+		class SIREN-NODE-PROCESSING-UNIT .
+*** =================================================================================================================
+		class SCREEN | isActivated : Bool . *****-------------
+		class SCREEN-NODE-PROCESSING-UNIT .
+*** =================================================================================================================
+	endom)
+	
